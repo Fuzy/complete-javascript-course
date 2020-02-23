@@ -16,7 +16,6 @@ const controlSearch = async () => {
     const query = SearchView.getInput();
 
     if (query) {
-        console.log(query);
         // 2) New search object and add to state
         state.search = new Search(query);
 
@@ -28,8 +27,7 @@ const controlSearch = async () => {
         // 4) Search for recipes
         await state.search.getResults();
         clearLoader();
-        SearchView.renderRecipes(state.search.result);
-        console.log(state.search.result.length);
+        SearchView.renderResults(state.search.result);
 
     }
 };
@@ -38,5 +36,14 @@ const controlSearch = async () => {
 elements.searchForm.addEventListener('submit', e => {
     e.preventDefault();
     controlSearch();
+});
+
+elements.searchResPages.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-inline');
+    if (btn) {
+        const goToPage = parseInt(btn.dataset.goto, 10);
+        SearchView.clearResults();
+        SearchView.renderResults(state.search.result, goToPage);
+    }
 });
 
