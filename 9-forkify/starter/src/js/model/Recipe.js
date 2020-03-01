@@ -88,4 +88,20 @@ export default class Recipe {
         });
 
     }
+
+    updateServings(type) {
+        let previousServings = this.servings;
+
+        if (type === 'inc') {
+            this.servings += 1;
+        } else {
+            if (this.servings > 1) {
+                this.servings -= 1;
+            }
+        }
+
+        this.ingredients.forEach(i => {
+            i.count = i.count / previousServings * this.servings;
+        });
+    }
 }
